@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]; then
+    echo "Usage: ipinfo <ip>"
+    exit 1
+fi
+
+IP="$1"
+API="http://ipwho.is/$IP"
+
+if ! command -v jq >/dev/null 2>&1; then
+    echo "Error: jq is not installed."
+    echo "Please install jq using the package manager of your OS."
+    exit 1
+fi
+
+response=$(curl -s "$API")
+
+if ! echo "$response" | jq empty >/dev/null 2>&1; then
+    echo "Error: Invalid JSON response"
+    exit 1
+fi
+
+success=$(echo "$response" | jq -r '.success // true')
+
+if [ "$success" = "false" ]; then
+    message=$(echo "$response" | jq -r '.message // "Request failed"')
+    echo "Error: $message"
+    exit 1
+fi
+
+echo "$response" | jq
