@@ -56,7 +56,7 @@ sudo pacman -S jq
 ## Installation
 
 ```bash
-# Make executable and install to /usr/local/bin
+curl -O https://raw.githubusercontent.com/Ruslan-Isaev/ipinfo-cli/main/ipinfo
 chmod +x ipinfo
 sudo cp ipinfo /usr/local/bin/
 ```
